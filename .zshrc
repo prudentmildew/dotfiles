@@ -9,6 +9,7 @@ alias l='ls -Gal'
 
 # Git
 alias ga='git add .'
+alias gl='git log'
 alias gs='git status'
 
 gc() {
