@@ -15,3 +15,15 @@ gc() {
   git commit -m "$1"
 }
 
+gp() {
+  git push origin $(git rev-parse --abbrev-ref HEAD)
+}
+
+gb() {
+  git checkout -b "$1"
+}
+
+go() {
+  git checkout "$1"
+}
+
