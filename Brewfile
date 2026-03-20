@@ -1,0 +1,7 @@
+brew "fnm"
+brew "gh"
+brew "git"
+brew "pnpm"
+brew "starship"
+cask "claude-code"
+cask "jetbrains-toolbox"
