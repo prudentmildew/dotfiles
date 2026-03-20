@@ -10,4 +10,8 @@ alias l='ls -Gal'
 # Git
 alias ga='git add .'
 alias gs='git status'
-alias gc='git commit'
+
+gc() {
+  git commit -m "$1"
+}
+
