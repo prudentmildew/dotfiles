@@ -54,7 +54,7 @@ if [[ "$pm" == "pnpm" ]]; then
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=24" },
   "scripts": {
     "format": "biome format --write .",
     "lint": "biome lint .",
@@ -74,7 +74,7 @@ else
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=24" },
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "format": "biome format --write .",
@@ -106,7 +106,7 @@ coverage
 !.env.example
 GI
 
-print -- "lts/jod" > "$target/.nvmrc"
+print -- "lts/krypton" > "$target/.nvmrc"
 
 cat > "$target/README.md" <<MD
 # $name
@@ -117,7 +117,7 @@ TypeScript monorepo scaffolded with \`scaffold ts-monorepo\`.
 - Package manager: $pm
 - TypeScript (strictest)
 - Biome (lint + format)
-- Node 22 LTS
+- Node 24 LTS
 
 ## Layout
 - \`apps/\` — applications
