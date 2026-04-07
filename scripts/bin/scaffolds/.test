@@ -1,0 +1,64 @@
+#!/usr/bin/env zsh
+# Smoke test for the ts-monorepo scaffold. Run manually after edits.
+# Exits 0 on success, non-zero with a clear message on the first failed assertion.
+set -uo pipefail
+
+script_dir="${0:A:h}"
+SCAFFOLD="$script_dir/../scaffold"
+
+if [[ ! -x "$SCAFFOLD" ]]; then
+  print -u2 -- ".test: dispatcher not found at $SCAFFOLD"
+  exit 1
+fi
+
+WORK="$(mktemp -d)"
+cleanup() { rm -rf "$WORK"; }
+trap cleanup EXIT
+
+fail() {
+  print -u2 -- ".test: FAIL — $1"
+  exit 1
+}
+
+run_pm() {
+  local pm="$1"
+  if ! command -v "$pm" >/dev/null 2>&1; then
+    print -- ".test: skipping $pm (not installed)"
+    return 0
+  fi
+
+  print -- ".test: ts-monorepo --pm $pm"
+  local proj="$WORK/proj-$pm"
+
+  "$SCAFFOLD" ts-monorepo "$proj" --pm "$pm" >/dev/null 2>&1 \
+    || fail "scaffold ts-monorepo --pm $pm exited non-zero"
+
+  [[ -d "$proj" ]] \
+    || fail "$pm: target directory not created"
+
+  [[ -f "$proj/package.json" ]] \
+    || fail "$pm: package.json missing"
+
+  node -e 'JSON.parse(require("fs").readFileSync(process.argv[1]))' "$proj/package.json" 2>/dev/null \
+    || fail "$pm: package.json is not valid JSON"
+
+  ( cd "$proj" && "$pm" run check ) >/dev/null 2>&1 \
+    || fail "$pm: '$pm run check' exited non-zero"
+
+  local commits
+  commits=$(git -C "$proj" rev-list --count HEAD 2>/dev/null) \
+    || fail "$pm: no git history in scaffolded project"
+  [[ "$commits" == "1" ]] \
+    || fail "$pm: expected exactly 1 commit, found $commits"
+
+  local subject
+  subject=$(git -C "$proj" log -1 --pretty=%s)
+  [[ "$subject" == "Initial scaffold" ]] \
+    || fail "$pm: commit subject is '$subject', expected 'Initial scaffold'"
+
+  print -- ".test: ✓ $pm"
+}
+
+run_pm pnpm
+
+print -- ".test: all assertions passed"
