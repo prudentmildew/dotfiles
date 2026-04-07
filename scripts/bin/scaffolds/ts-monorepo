@@ -1,0 +1,164 @@
+#!/usr/bin/env zsh
+# desc: TypeScript monorepo (pnpm|bun, Biome, strict TS)
+set -euo pipefail
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  print -- "Usage: scaffold ts-monorepo <directory> [--pm pnpm|bun]"
+  print -- ""
+  print -- "Options:"
+  print -- "  --pm <pnpm|bun>   Package manager (default: pnpm)"
+  exit 0
+fi
+
+target="$1"; shift
+
+pm="pnpm"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --pm)     pm="$2"; shift 2 ;;
+    --pm=*)   pm="${1#--pm=}"; shift ;;
+    *)
+      print -u2 -- "ts-monorepo: unknown option '$1'"
+      exit 1
+      ;;
+  esac
+done
+
+if [[ "$pm" != "pnpm" ]]; then
+  print -u2 -- "ts-monorepo: --pm '$pm' not supported (only 'pnpm' for now)"
+  exit 1
+fi
+
+if ! command -v "$pm" >/dev/null 2>&1; then
+  print -u2 -- "ts-monorepo: '$pm' not found on PATH"
+  exit 1
+fi
+
+cleanup() {
+  local rc=$?
+  if [[ $rc -ne 0 ]]; then
+    rm -rf "$target"
+  fi
+  exit $rc
+}
+trap cleanup EXIT
+
+name="${target:t}"
+
+print -- "→ Writing files"
+
+cat > "$target/package.json" <<JSON
+{
+  "name": "$name",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check ."
+  }
+}
+JSON
+
+cat > "$target/pnpm-workspace.yaml" <<'YAML'
+packages:
+  - "apps/*"
+  - "packages/*"
+YAML
+
+cat > "$target/tsconfig.base.json" <<'JSON'
+{
+  "extends": "@tsconfig/strictest/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "verbatimModuleSyntax": true
+  }
+}
+JSON
+
+cat > "$target/.gitignore" <<'GI'
+node_modules
+dist
+build
+coverage
+.env.*
+!.env.example
+GI
+
+print -- "lts/jod" > "$target/.nvmrc"
+
+cat > "$target/README.md" <<MD
+# $name
+
+TypeScript monorepo scaffolded with \`scaffold ts-monorepo\`.
+
+## Stack
+- Package manager: $pm
+- TypeScript (strictest)
+- Biome (lint + format)
+- Node 22 LTS
+
+## Layout
+- \`apps/\` — applications
+- \`packages/\` — shared libraries
+
+## Scripts
+- \`$pm run check\` — lint + format check
+- \`$pm run format\` — apply formatting
+- \`$pm run lint\` — lint only
+MD
+
+mkdir -p "$target/apps" "$target/packages"
+: > "$target/apps/.gitkeep"
+: > "$target/packages/.gitkeep"
+
+print -- "→ Installing dependencies ($pm)"
+(
+  cd "$target"
+  pnpm add -D -w @biomejs/biome @tsconfig/strictest >/dev/null 2>&1
+
+  biome_version=$(pnpm exec biome --version 2>/dev/null | awk '{print $NF}')
+  cat > biome.json <<JSON
+{
+  "\$schema": "https://biomejs.dev/schemas/$biome_version/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "ignoreUnknown": true },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": { "recommended": true }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  }
+}
+JSON
+)
+
+if ! git -C "$target" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  print -- "→ Initializing git"
+  (
+    cd "$target"
+    git init -q -b main
+    git add -A
+    git commit -q -m "Initial scaffold"
+  )
+fi
+
+print -- "✓ Scaffolded ts-monorepo at $target"
+print -- ""
+print -- "Next:"
+print -- "  cd $name"
+print -- "  $pm run check"
