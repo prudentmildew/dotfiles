@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 DOTFILES="$HOME/.dotfiles"
 
@@ -28,5 +28,6 @@ link() {
 link ".zshrc"        ".zshrc"
 link ".gitconfig"    ".gitconfig"
 link ".config"       ".config"
+link "scripts/bin"   "bin"
 
-echo "\nDone."
+printf "\nDone."
