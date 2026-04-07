@@ -1,2 +1,69 @@
 #!/usr/bin/env zsh
-echo "Hello from zsh!"
+# Scaffold dispatcher: forwards to scripts/bin/scaffolds/<type>.
+set -euo pipefail
+
+script_dir="${0:A:h}"
+scaffolds_dir="$script_dir/scaffolds"
+
+usage() {
+  print -- "Usage: scaffold <type> <directory> [options]"
+  print -- ""
+  print -- "Available types:"
+  if [[ -d "$scaffolds_dir" ]]; then
+    local f name desc
+    for f in "$scaffolds_dir"/*(N); do
+      [[ -f "$f" && -x "$f" ]] || continue
+      name="${f:t}"
+      [[ "$name" == .* ]] && continue
+      desc="$(sed -n '2s/^# desc:[[:space:]]*//p' "$f")"
+      [[ -z "$desc" ]] && desc="(no description)"
+      printf "  %-14s %s\n" "$name" "$desc"
+    done
+  fi
+  print -- ""
+  print -- "Options after <directory> are forwarded to the scaffold."
+  print -- "Run 'scaffold <type> --help' for type-specific options."
+}
+
+if [[ $# -eq 0 ]]; then
+  usage >&2
+  exit 1
+fi
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ $# -lt 2 ]]; then
+  usage >&2
+  exit 1
+fi
+
+type="$1"; target="$2"; shift 2
+
+scaffold_path="$scaffolds_dir/$type"
+if [[ ! -x "$scaffold_path" ]]; then
+  print -u2 -- "scaffold: unknown type '$type'"
+  print -u2 -- ""
+  usage >&2
+  exit 1
+fi
+
+if [[ -e "$target" && ! -d "$target" ]]; then
+  print -u2 -- "scaffold: target '$target' exists and is not a directory"
+  exit 1
+fi
+
+if [[ -d "$target" ]]; then
+  if [[ -n "$(ls -A "$target" 2>/dev/null)" ]]; then
+    print -u2 -- "scaffold: target directory '$target' is not empty"
+    exit 1
+  fi
+else
+  mkdir -p "$target"
+fi
+
+abs_target="${target:A}"
+
+exec "$scaffold_path" "$abs_target" "$@"
