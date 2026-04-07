@@ -40,7 +40,7 @@ if [[ $# -lt 2 ]]; then
   exit 1
 fi
 
-type="$1"; target="$2"; shift 2
+type="$1"; shift
 
 scaffold_path="$scaffolds_dir/$type"
 if [[ ! -x "$scaffold_path" ]]; then
@@ -49,6 +49,18 @@ if [[ ! -x "$scaffold_path" ]]; then
   usage >&2
   exit 1
 fi
+
+# `scaffold <type> -h|--help` -> let the sub-scaffold print its own help
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  exec "$scaffold_path" "$@"
+fi
+
+if [[ $# -lt 1 ]]; then
+  usage >&2
+  exit 1
+fi
+
+target="$1"; shift
 
 if [[ -e "$target" && ! -d "$target" ]]; then
   print -u2 -- "scaffold: target '$target' exists and is not a directory"
