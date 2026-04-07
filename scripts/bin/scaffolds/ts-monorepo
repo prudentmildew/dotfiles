@@ -24,8 +24,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ "$pm" != "pnpm" ]]; then
-  print -u2 -- "ts-monorepo: --pm '$pm' not supported (only 'pnpm' for now)"
+if [[ "$pm" != "pnpm" && "$pm" != "bun" ]]; then
+  print -u2 -- "ts-monorepo: --pm '$pm' not supported (use pnpm or bun)"
   exit 1
 fi
 
@@ -47,7 +47,8 @@ name="${target:t}"
 
 print -- "→ Writing files"
 
-cat > "$target/package.json" <<JSON
+if [[ "$pm" == "pnpm" ]]; then
+  cat > "$target/package.json" <<JSON
 {
   "name": "$name",
   "private": true,
@@ -61,12 +62,28 @@ cat > "$target/package.json" <<JSON
   }
 }
 JSON
-
-cat > "$target/pnpm-workspace.yaml" <<'YAML'
+  cat > "$target/pnpm-workspace.yaml" <<'YAML'
 packages:
   - "apps/*"
   - "packages/*"
 YAML
+else
+  cat > "$target/package.json" <<JSON
+{
+  "name": "$name",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check ."
+  }
+}
+JSON
+fi
 
 cat > "$target/tsconfig.base.json" <<'JSON'
 {
@@ -119,9 +136,13 @@ mkdir -p "$target/apps" "$target/packages"
 print -- "→ Installing dependencies ($pm)"
 (
   cd "$target"
-  pnpm add -D -w @biomejs/biome @tsconfig/strictest >/dev/null 2>&1
-
-  biome_version=$(pnpm exec biome --version 2>/dev/null | awk '{print $NF}')
+  if [[ "$pm" == "pnpm" ]]; then
+    pnpm add -D -w @biomejs/biome @tsconfig/strictest >/dev/null 2>&1
+    biome_version=$(pnpm exec biome --version 2>/dev/null | awk '{print $NF}')
+  else
+    bun add -d @biomejs/biome @tsconfig/strictest >/dev/null 2>&1
+    biome_version=$(bunx biome --version 2>/dev/null | awk '{print $NF}')
+  fi
   cat > biome.json <<JSON
 {
   "\$schema": "https://biomejs.dev/schemas/$biome_version/schema.json",

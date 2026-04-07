@@ -60,5 +60,6 @@ run_pm() {
 }
 
 run_pm pnpm
+run_pm bun
 
 print -- ".test: all assertions passed"
