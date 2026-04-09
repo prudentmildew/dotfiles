@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-# desc: Stub scaffold used to smoke-test the dispatcher
-set -euo pipefail
-
-target="$1"; shift
-print -- "$target $*" > "$target/.hello"
