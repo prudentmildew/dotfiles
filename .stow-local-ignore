@@ -11,6 +11,7 @@ README\.md
 Brewfile
 progress\.txt
 \.stow-local-ignore
+\.dev
 
 # Claude Code — generated runtime dirs that shouldn't live in ~
 # (stow would otherwise try to symlink .claude/ as a whole)

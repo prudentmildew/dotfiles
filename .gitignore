@@ -6,6 +6,7 @@
 
 # Personal scratch / local-only notes
 progress.txt
+/.dev/
 
 # Claude Code — local state & generated runtime data
 /.claude.json
