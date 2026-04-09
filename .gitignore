@@ -1,2 +1,34 @@
+/.idea/
+
+# Ignore my local dev stuff
 /.claude/settings.local.json
 progress.txt
+
+# --- IGNORE GENERATED DATA ---
+/.claude/projects/
+/.claude/checkpoints/
+/.claude/tmp/
+/.claude/backups/
+/.claude/cache/
+/.claude/file-history/
+/.claude/history.jsonl
+/.claude/ide/
+/.claude/plans/
+/.claude/plugins/
+/.claude/session-env/
+/.claude/sessions/
+/.claude/shell-snapshots/
+/.claude/telemetry/
+# --- IGNORE GENERATED DATA ---
+
+# Global instructions and core settings
+!/.claude.json
+!/.claude/CLAUDE.md
+!/.claude/settings.json
+!/.claude/keybindings.json
+
+# Custom logic (Personal Rules, Agents and Skills)
+!/.claude/rules/
+!/.claude/skills/
+!/.claude/output-styles
+!/.claude/agents/
