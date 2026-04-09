@@ -3,5 +3,3 @@
 	email = erland.glad.solstrand@gmail.com
 [init]
 	defaultBranch = main
-[core]
-	excludesfile = /Users/erland/.dotfiles/.gitignore_global

@@ -19,6 +19,8 @@ progress.txt
 /.claude/sessions/
 /.claude/shell-snapshots/
 /.claude/telemetry/
+/.claude/*.lock
+/.claude/mcp-needs-auth-cache.json
 # --- IGNORE GENERATED DATA ---
 
 # Global instructions and core settings
