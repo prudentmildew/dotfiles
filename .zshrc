@@ -1,7 +1,3 @@
-export SHELL_SESSIONS_DISABLE=1
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 eval "$(starship init zsh)"
 eval "$(fnm env --use-on-cd)"
@@ -45,3 +41,7 @@ gacp() {
   git push origin $(git rev-parse --abbrev-ref HEAD)
 }
 
+export SHELL_SESSIONS_DISABLE=1
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
