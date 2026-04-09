@@ -1,9 +1,3 @@
-# IDE
-/.idea/
-
-# macOS
-.DS_Store
-
 # Personal scratch / local-only notes
 progress.txt
 /.dev/
