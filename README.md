@@ -1,14 +1,18 @@
 # My dotfiles
 
 ## Setup
-Clone this repository to `~/.dotfiles`
+
+Clone this repository to `~/.dotfiles` and run the init script:
 
 ```shell
-$ cd ~/.dotfiles
-$ brew bundle 
-$ stow . 
+git clone <repo-url> ~/.dotfiles
+~/.dotfiles/scripts/init.sh
 ```
 
-Optional: remove Git by running `rm -rf ~/.dotfiles/.git`
+## Updating
 
-🎉
+To update Homebrew packages, dotfile symlinks, and Claude Code:
+
+```shell
+~/.dotfiles/scripts/update.sh
+```
