@@ -1,5 +1,7 @@
 # Feature: Use Native Installer for Claude Code
 
+**Status:** Completed
+
 This file describes the need for using the native installer for Claude Code instead of the Brew installer.
 
 ## Motivation
