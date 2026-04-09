@@ -1,8 +1,13 @@
 # My dotfiles
 
 ## Setup
-1. Clone this repository to `~/.dotfiles`
-2. Set up symlinks by running `~/.dotfiles/scripts/init.sh`
+Clone this repository to `~/.dotfiles`
+
+```shell
+$ cd ~/.dotfiles
+$ brew bundle 
+$ stow . 
+```
 
 Optional: remove Git by running `rm -rf ~/.dotfiles/.git`
 
