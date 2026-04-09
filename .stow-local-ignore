@@ -1,11 +1,28 @@
-\.idea
+# Repo & IDE metadata — never symlink these
 \.git
-\.DS_Store
 \.gitignore
+\.idea
 
+# macOS noise
+\.DS_Store
+
+# Dotfiles repo documentation & tooling
+README\.md
 Brewfile
-progress.txt
-README.md
+progress\.txt
+\.stow-local-ignore
 
-
-
+# Claude Code — generated runtime dirs that shouldn't live in ~
+# (stow would otherwise try to symlink .claude/ as a whole)
+\.claude/backups
+\.claude/cache
+\.claude/checkpoints
+\.claude/file-history
+\.claude/ide
+\.claude/plans
+\.claude/projects
+\.claude/session-env
+\.claude/sessions
+\.claude/shell-snapshots
+\.claude/telemetry
+\.claude/tmp

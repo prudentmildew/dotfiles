@@ -1,36 +1,39 @@
+# IDE
 /.idea/
 
-# Ignore my local dev stuff
-/.claude/settings.local.json
+# macOS
+.DS_Store
+
+# Personal scratch / local-only notes
 progress.txt
 
-# --- IGNORE GENERATED DATA ---
-/.claude/projects/
-/.claude/checkpoints/
-/.claude/tmp/
+# Claude Code — local state & generated runtime data
+/.claude.json
 /.claude/backups/
 /.claude/cache/
+/.claude/checkpoints/
 /.claude/file-history/
 /.claude/history.jsonl
 /.claude/ide/
+/.claude/mcp-needs-auth-cache.json
 /.claude/plans/
 /.claude/plugins/
+/.claude/projects/
 /.claude/session-env/
 /.claude/sessions/
 /.claude/shell-snapshots/
 /.claude/telemetry/
+/.claude/tmp/
 /.claude/*.lock
-/.claude/mcp-needs-auth-cache.json
-# --- IGNORE GENERATED DATA ---
 
-# Global instructions and core settings
-!/.claude.json
-!/.claude/CLAUDE.md
+# Sensitive auth tokens
+/.config/gh/hosts.yml
+
+# --- Explicitly keep intentional config ---
 !/.claude/settings.json
 !/.claude/keybindings.json
-
-# Custom logic (Personal Rules, Agents and Skills)
+!/.claude/CLAUDE.md
 !/.claude/rules/
 !/.claude/skills/
-!/.claude/output-styles
 !/.claude/agents/
+!/.claude/statusline-command.sh
