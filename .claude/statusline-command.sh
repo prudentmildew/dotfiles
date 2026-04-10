@@ -8,8 +8,6 @@ total_cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
 current_dir=$(echo "$input" | jq -r '.worktree.original_cwd // empty')
 rl_5h_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty' | awk '{printf "%.0f", $1}')
 rl_5h_reset=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
-rl_7d_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
-rl_7d_reset=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 if [ -n "$used" ]; then
   used_display=$(printf "%.0f" "$used")
@@ -55,7 +53,6 @@ make_bar() {
   pct="$1"
   width=10
   filled=$(( pct * width / 100 ))
-  empty=$(( width - filled ))
   bar=""
   i=0
   while [ $i -lt $filled ]; do bar="${bar}█"; i=$(( i + 1 )); done
@@ -79,7 +76,6 @@ format_rl() {
 
 rate_limit_str=""
 rate_limit_str="${rate_limit_str}$(format_rl "$rl_5h_pct" "$rl_5h_reset" "5h")"
-# rate_limit_str="${rate_limit_str}$(format_rl "$rl_7d_pct" "$rl_7d_reset" "7d")"
 
 repo_root=$(cd "$current_dir" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null || echo "$current_dir")
 dir_display=$(basename "$repo_root")
