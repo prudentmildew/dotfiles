@@ -21,6 +21,9 @@ progress.txt
 /.claude/tmp/
 /.claude/*.lock
 
+# Bun binaries
+/.bun/bin/
+
 # Sensitive auth tokens
 /.config/gh/hosts.yml
 

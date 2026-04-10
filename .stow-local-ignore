@@ -28,3 +28,6 @@ scripts
 \.claude/shell-snapshots
 \.claude/telemetry
 \.claude/tmp
+
+
+\.bun/bin
