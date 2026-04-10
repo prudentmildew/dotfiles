@@ -20,12 +20,15 @@ if ! command -v claude &> /dev/null; then
   curl -fsSL https://claude.ai/install.sh | bash
 else
   echo "Claude Code is already installed."
-  claude -v
-  echo "Old version of CLaude Code? Run update.sh."
 fi
 
-echo "==> Installing Bun..."
-curl -fsSL https://bun.sh/install | bash
+# Is Bun installed?
+if ! command -v bun &> /dev/null; then
+  echo "==> Installing Bun..."
+  curl -fsSL https://bun.sh/install | bash
+else
+  echo "Bun is already installed."
+fi
 
 echo "==> Symlinking dotfiles with stow..."
 stow .
