@@ -9,8 +9,11 @@ brew update && brew upgrade
 echo "==> Installing new brew bundle entries..."
 brew bundle
 
+echo "==> Updating Claude Code..."
+claude update
+
+echo "==> Upgrading Bun..."
+bun upgrade
+
 echo "==> Symlinking dotfiles with stow..."
 stow .
-
-echo "==> Updating Claude Code via native installer..."
-curl -fsSL https://claude.ai/install.sh | bash
