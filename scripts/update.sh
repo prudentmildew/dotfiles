@@ -15,5 +15,8 @@ claude update
 echo "==> Upgrading Bun..."
 bun upgrade
 
+echo "==> Upgrading Ollama..."
+curl -fsSL https://ollama.com/install.sh | sh
+
 echo "==> Symlinking dotfiles with stow..."
 stow .

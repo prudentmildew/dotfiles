@@ -30,5 +30,13 @@ else
   echo "Bun is already installed."
 fi
 
+# Is Ollama installed?
+if ! command -v ollama &> /dev/null; then
+  echo "==> Installing Ollama..."
+  curl -fsSL https://ollama.com/install.sh | sh
+else
+  echo "Ollama is already installed."
+fi
+
 echo "==> Symlinking dotfiles with stow..."
 stow .
