@@ -1,3 +1,54 @@
-**/.claude/settings.local.json
+# === macOS ===
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# === Editors & IDEs ===
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
+.editorconfig
+
+# === Node.js / Frontend ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.npm/
+.yarn/
+.eslintcache
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Vite ===
+dist/
+dist-ssr/
+
+# === Build output ===
+build/
+out/
+*.local
+
+# === Go ===
+bin/
+vendor/
+
+# === Environment & secrets ===
+.env
+.env.*
+!.env.example
+
+# === Misc ===
+*.log
+*.pid
+*.seed
+Thumbs.db
