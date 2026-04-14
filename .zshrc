@@ -29,11 +29,6 @@ gb() {
   git checkout -b "$1"
 }
 
-#Switch to branch $1
-go() {
-  git checkout "$1"
-}
-
 #Super command: add + commit + push
 gacp() {
   git add .

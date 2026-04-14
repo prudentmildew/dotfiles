@@ -20,7 +20,7 @@ progress.txt
 /.claude/telemetry/
 /.claude/tmp/
 /.claude/*.lock
-
+/.claude/tasks
 # Bun binaries
 /.bun/bin/
 
