@@ -13,6 +13,9 @@ progress\.txt
 \.stow-local-ignore
 \.dev
 scripts
+AGENTS.md
+CLAUDE.md
+
 
 # Claude Code — generated runtime dirs that shouldn't live in ~
 # (stow would otherwise try to symlink .claude/ as a whole)

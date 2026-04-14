@@ -2,6 +2,8 @@
 progress.txt
 /.dev/
 
+/.idea
+
 # Claude Code — local state & generated runtime data
 /.claude.json
 /.claude/backups/
