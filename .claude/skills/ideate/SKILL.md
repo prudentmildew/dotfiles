@@ -9,4 +9,4 @@ Ask the questions one at a time.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
-The completed idea should be saved as a Markdown file in the `ideas` folder.
+The completed idea should be saved as a Markdown file in the `./docs/ideas` folder.
