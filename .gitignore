@@ -38,3 +38,5 @@ progress.txt
 !/.claude/skills/
 !/.claude/agents/
 !/.claude/statusline-command.sh
+
+!/.local/bin/
