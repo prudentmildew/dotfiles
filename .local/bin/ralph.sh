@@ -138,10 +138,29 @@ slugify() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//'
 }
 
+# --- Auto-detect test command ---
+detect_test_command() {
+  if [[ -f Makefile ]] && grep -q '^test:' Makefile 2>/dev/null; then
+    echo "make test"
+  elif [[ -f package.json ]] && grep -q '"test"' package.json 2>/dev/null; then
+    echo "npm test"
+  elif [[ -f build.gradle ]]; then
+    echo "./gradlew test"
+  else
+    return 1
+  fi
+}
+
+# --- Summary tracking ---
+TOTAL_ITERATIONS=0
+PR_URLS=()
+FAILED_ITERATIONS=()
+
 # --- Main loop ---
 for (( i=1; i<=ITERATIONS; i++ )); do
   echo ""
   echo "ralph: === iteration $i/$ITERATIONS ==="
+  TOTAL_ITERATIONS=$i
 
   git checkout main && git pull origin main
 
@@ -150,7 +169,7 @@ for (( i=1; i<=ITERATIONS; i++ )); do
     rc=$?
     if [[ $rc -eq 2 ]]; then
       echo "ralph: all slices complete — exiting early"
-      exit 0
+      break
     fi
     exit "$rc"
   }
@@ -173,4 +192,47 @@ for (( i=1; i<=ITERATIONS; i++ )); do
   echo "ralph: launching sbx..."
   sbx run claude . -- -p "Implement GitHub issue #${slice_number}: ${slice_title}. Use /tdd. Commit when done."
 
+  # --- Test gate ---
+  test_cmd=$(detect_test_command) || {
+    echo "ralph: warning: no test runner detected, skipping test gate" >&2
+    test_cmd=""
+  }
+
+  tests_passed=true
+  if [[ -n "$test_cmd" ]]; then
+    echo "ralph: running tests: $test_cmd"
+    if ! $test_cmd; then
+      tests_passed=false
+    fi
+  fi
+
+  if [[ "$tests_passed" == true ]]; then
+    # Push and open PR
+    git push -u origin "$branch"
+    pr_url=$(gh pr create \
+      --repo "$REPO" \
+      --head "$branch" \
+      --title "$slice_title" \
+      --body "Closes #${slice_number}")
+    echo "ralph: PR opened — $pr_url"
+    PR_URLS+=("$pr_url")
+  else
+    echo "ralph: warning: tests failed for iteration $i (issue #$slice_number) — branch left intact" >&2
+    FAILED_ITERATIONS+=("$i (#$slice_number)")
+  fi
+
 done
+
+# --- Summary ---
+echo ""
+echo "ralph: === summary ==="
+echo "ralph: iterations run: $TOTAL_ITERATIONS"
+echo "ralph: PRs opened: ${#PR_URLS[@]}"
+for url in "${PR_URLS[@]}"; do
+  echo "  $url"
+done
+if [[ ${#FAILED_ITERATIONS[@]} -gt 0 ]]; then
+  echo "ralph: failed iterations: ${FAILED_ITERATIONS[*]}"
+else
+  echo "ralph: no failures"
+fi
