@@ -19,6 +19,7 @@ progress.txt
 /.claude/session-env/
 /.claude/sessions/
 /.claude/shell-snapshots/
+/.claude/stats-cache.json
 /.claude/telemetry/
 /.claude/tmp/
 /.claude/*.lock
