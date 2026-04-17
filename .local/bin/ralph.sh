@@ -76,6 +76,11 @@ sync_config() {
 sync_config
 echo "ralph: config synced"
 
+# --- Prepare log directory ---
+RALPH_LOG_DIR=".claude/logs"
+rm -rf "$RALPH_LOG_DIR"
+mkdir -p "$RALPH_LOG_DIR"
+
 # --- Sub-issue discovery and eligibility filter ---
 # Returns: prints "NUMBER TITLE" of the next eligible slice
 # Exit 0: found a slice; Exit 2: no eligible slices remain
@@ -188,9 +193,28 @@ for (( i=1; i<=ITERATIONS; i++ )); do
   # Create fresh branch from main
   git checkout -b "$branch" main
 
-  # Launch Claude in sandbox
+  # Launch Claude in sandbox with streaming output
   echo "ralph: launching sbx..."
-  sbx run claude . -- -p "Implement GitHub issue #${slice_number}: ${slice_title}. Use /tdd. Commit when done."
+  RALPH_LOG="${RALPH_LOG_DIR}/ralph-iter-${i}-issue-${slice_number}.jsonl"
+  sbx run claude . -- \
+    "Implement GitHub issue #${slice_number}: ${slice_title}. Use /tdd. Commit when done." \
+    --print --output-format stream-json --verbose --include-partial-messages \
+    | tee "$RALPH_LOG" \
+    | grep --line-buffered '^{' \
+    | jq --unbuffered -rj '
+      if .type == "stream_event" then
+        if .event.type? == "content_block_start" and .event.content_block.type? == "tool_use" then
+          "\n>>> " + .event.content_block.name + " "
+        elif .event.type? == "content_block_delta" then
+          if .event.delta.type? == "text_delta" then
+            .event.delta.text
+          elif .event.delta.type? == "input_json_delta" then
+            .event.delta.partial_json
+          else empty end
+        elif .event.type? == "content_block_stop" then
+          "\n"
+        else empty end
+      else empty end'
 
   # --- Test gate ---
   test_cmd=$(detect_test_command) || {
