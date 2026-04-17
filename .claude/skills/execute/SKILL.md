@@ -1,5 +1,5 @@
 ---
-name: execute-implementation
+name: execute
 description: Execute the implementation of the PRD by breaking it down into vertical slices and implementing them one by one using TDD.
 ---
 
