@@ -132,3 +132,45 @@ find_next_slice() {
   echo "ralph: no eligible slices remain for PRD #$prd_number" >&2
   return 2
 }
+
+# --- Slugify a title for branch naming ---
+slugify() {
+  echo "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//'
+}
+
+# --- Main loop ---
+for (( i=1; i<=ITERATIONS; i++ )); do
+  echo ""
+  echo "ralph: === iteration $i/$ITERATIONS ==="
+
+  git checkout main && git pull origin main
+
+  # Find next eligible slice
+  slice_info=$(find_next_slice "$ISSUE_NUMBER" "$REPO") || {
+    rc=$?
+    if [[ $rc -eq 2 ]]; then
+      echo "ralph: all slices complete — exiting early"
+      exit 0
+    fi
+    exit "$rc"
+  }
+
+  slice_number=$(echo "$slice_info" | cut -d' ' -f1)
+  slice_title=$(echo "$slice_info" | cut -d' ' -f2-)
+  slug=$(slugify "$slice_title")
+  branch="issue-${slice_number}-${slug}"
+
+  echo "ralph: picked #$slice_number — $slice_title"
+  echo "ralph: branch=$branch"
+
+  # Delete existing local branch if it exists (for retries)
+  git branch -D "$branch" 2>/dev/null || true
+
+  # Create fresh branch from main
+  git checkout -b "$branch" main
+
+  # Launch Claude in sandbox
+  echo "ralph: launching sbx..."
+  sbx run claude . -- -p "Implement GitHub issue #${slice_number}: ${slice_title}. Use /tdd. Commit when done."
+
+done
