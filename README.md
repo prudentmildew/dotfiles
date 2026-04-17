@@ -22,3 +22,6 @@ To update Homebrew packages, dotfile symlinks, and Claude Code:
 ## Skills
 
 Reusable Claude Code skills live in `.claude/skills/`. See [.claude/AGENTS.md](.claude/AGENTS.md) for the full workflow and skill listing.
+
+## Manual installs
+- [Wispr Flow](https://wisprflow.ai/)
