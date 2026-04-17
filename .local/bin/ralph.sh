@@ -75,3 +75,60 @@ sync_config() {
 
 sync_config
 echo "ralph: config synced"
+
+# --- Sub-issue discovery and eligibility filter ---
+# Returns: prints "NUMBER TITLE" of the next eligible slice
+# Exit 0: found a slice; Exit 2: no eligible slices remain
+find_next_slice() {
+  local prd_number="$1"
+  local repo="$2"
+
+  # Fetch PRD body
+  local body
+  body=$(gh issue view "$prd_number" --repo "$repo" --json body -q .body 2>/dev/null) || {
+    echo "Error: could not fetch PRD issue #$prd_number" >&2
+    return 1
+  }
+
+  # Extract issue numbers from task list: "- [ ] #42" or "- [ ] #42 — title"
+  # Also handles URLs like "- [ ] https://github.com/.../issues/42"
+  local issue_numbers=()
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^[[:space:]]*-\ \[\ \]\ \#([0-9]+) ]]; then
+      issue_numbers+=("${BASH_REMATCH[1]}")
+    elif [[ "$line" =~ ^[[:space:]]*-\ \[\ \]\ https://github\.com/[^/]+/[^/]+/issues/([0-9]+) ]]; then
+      issue_numbers+=("${BASH_REMATCH[1]}")
+    fi
+  done <<< "$body"
+
+  if [[ ${#issue_numbers[@]} -eq 0 ]]; then
+    echo "ralph: no task list items found in PRD #$prd_number" >&2
+    return 2
+  fi
+
+  # Check each issue for eligibility: must be open and have no open PR
+  for num in "${issue_numbers[@]}"; do
+    # Check if issue is open
+    local state
+    state=$(gh issue view "$num" --repo "$repo" --json state -q .state 2>/dev/null) || continue
+    if [[ "$state" != "OPEN" ]]; then
+      continue
+    fi
+
+    # Check if there's already an open PR for this issue
+    local pr_count
+    pr_count=$(gh pr list --repo "$repo" --search "issue:$num" --state open --json number -q 'length' 2>/dev/null) || pr_count=0
+    if [[ "$pr_count" -gt 0 ]]; then
+      continue
+    fi
+
+    # Found an eligible slice — get its title
+    local title
+    title=$(gh issue view "$num" --repo "$repo" --json title -q .title 2>/dev/null) || title="unknown"
+    echo "$num $title"
+    return 0
+  done
+
+  echo "ralph: no eligible slices remain for PRD #$prd_number" >&2
+  return 2
+}
