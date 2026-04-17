@@ -25,6 +25,7 @@ progress.txt
 /.claude/tasks
 # Bun binaries
 /.bun/bin/
+/.bun
 
 # Sensitive auth tokens
 /.config/gh/hosts.yml
