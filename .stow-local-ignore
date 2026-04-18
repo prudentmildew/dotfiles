@@ -34,5 +34,9 @@ UBIQUITOUS_LANGUAGE.md
 \.claude/telemetry
 \.claude/tmp
 
+# pi coding agent — generated runtime / secrets that shouldn't be symlinked into ~
+\.pi/agent/auth.json
+\.pi/agent/bin
+\.pi/agent/sessions
 
 \.bun/bin

@@ -28,6 +28,15 @@ progress.txt
 /.bun/bin/
 /.bun
 
+# pi coding agent — local state & generated runtime data
+/.pi/agent/auth.json
+/.pi/agent/bin/
+/.pi/agent/sessions/
+
+# --- Explicitly keep intentional config ---
+!/.pi/agent/settings.json
+!/.pi/agent/skills/
+
 # Sensitive auth tokens
 /.config/gh/hosts.yml
 
