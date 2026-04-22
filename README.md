@@ -26,3 +26,4 @@ Reusable Claude Code skills live in `.claude/skills/`. See [.claude/AGENTS.md](.
 ## Manual installs
 - [Wispr Flow](https://wisprflow.ai/)
 - [Cytoscape](https://cytoscape.org/download.html)
+- [LM Studio](https://lmstudio.ai/)
