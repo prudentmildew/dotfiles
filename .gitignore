@@ -40,6 +40,17 @@ progress.txt
 # Sensitive auth tokens
 /.config/gh/hosts.yml
 
+# GitHub Copilot - local state, secrets, and session data
+/.config/github-copilot/**
+/.config/github-copilot/apps.json
+/.config/github-copilot/oauth.json
+/.config/github-copilot/*.db
+/.config/github-copilot/iu/chat-agent-sessions/
+
+# --- Explicitly keep intentional config ---
+!/.config/github-copilot/intellij/
+!/.config/github-copilot/intellij/mcp.json
+
 # --- Explicitly keep intentional config ---
 !/.claude/settings.json
 !/.claude/keybindings.json
