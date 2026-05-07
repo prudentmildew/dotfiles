@@ -18,8 +18,5 @@ npm update -g @mariozechner/pi-coding-agent
 echo "==> Upgrading Bun..."
 bun upgrade
 
-echo "==> Upgrading Ollama..."
-curl -fsSL https://ollama.com/install.sh | sh
-
 echo "==> Symlinking dotfiles with stow..."
 stow .
