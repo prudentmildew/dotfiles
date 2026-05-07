@@ -6,6 +6,6 @@
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
-  "skipDangerousModePermissionPrompt": true,
-  "effortLevel": "high"
+  "effortLevel": "xhigh",
+  "skipDangerousModePermissionPrompt": true
 }
