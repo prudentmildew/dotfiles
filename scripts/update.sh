@@ -18,5 +18,8 @@ npm update -g @mariozechner/pi-coding-agent
 echo "==> Upgrading Bun..."
 bun upgrade
 
+echo "==> Upgrading sdkman..."
+sdk selfupdate
+
 echo "==> Symlinking dotfiles with stow..."
 stow .

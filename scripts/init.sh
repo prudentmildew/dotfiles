@@ -50,5 +50,14 @@ else
   bun -v
 fi
 
+# Is sdkman installed?
+if ! command -v sdk &> /dev/null; then
+  echo "==> Installing sdkman..."
+  curl -s "https://get.sdkman.io" | bash
+else
+  echo "sdkman is already installed."
+  sdk version
+fi
+
 echo "==> Symlinking dotfiles with stow..."
 stow .

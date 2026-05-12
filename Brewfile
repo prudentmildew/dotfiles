@@ -1,4 +1,5 @@
 tap "docker/tap"
+brew "bash"
 brew "cmake"
 brew "fnm"
 brew "gh"

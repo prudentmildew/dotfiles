@@ -52,3 +52,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$PATH:/Users/erland/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
