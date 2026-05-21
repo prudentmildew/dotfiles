@@ -59,5 +59,13 @@ else
   sdk version
 fi
 
+# Is Hermes installed?
+if ! command -v hermes &> /dev/null; then
+  echo "==> Installing Hermes..."
+  curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+else
+  echo "Hermes is already installed."
+fi
+
 echo "==> Symlinking dotfiles with stow..."
 stow .

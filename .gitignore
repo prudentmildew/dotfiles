@@ -24,6 +24,7 @@ progress.txt
 /.claude/tmp/
 /.claude/*.lock
 /.claude/tasks
+
 # Bun binaries
 /.bun/bin/
 /.bun
@@ -46,6 +47,8 @@ progress.txt
 /.config/github-copilot/oauth.json
 /.config/github-copilot/*.db
 /.config/github-copilot/iu/chat-agent-sessions/
+
+/.config/uv/
 
 # --- Explicitly keep intentional config ---
 !/.config/github-copilot/intellij/
