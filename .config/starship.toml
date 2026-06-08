@@ -1,0 +1,3 @@
+# Allow longer-running commands (e.g. cold `node --version` after an fnm
+# version switch) before Starship gives up and warns.
+command_timeout = 2000
