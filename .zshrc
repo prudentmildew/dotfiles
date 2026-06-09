@@ -9,6 +9,9 @@ alias gs='git status'
 alias ..='cd ..'
 alias ...='cd ../..'
 
+alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
+alias claude-personal='CLAUDE_CONFIG_DIR="$HOME/.claude-personal" claude'
+
 #Commit staged changes, with message $1
 gc() {
   git commit -m "$1"
