@@ -1,5 +1,6 @@
 tap "docker/tap"
 brew "bash"
+brew "cloc"
 brew "cmake"
 brew "ffmpeg"
 brew "fnm"
