@@ -58,5 +58,14 @@ else
   echo "Hermes is already installed."
 fi
 
+# Is Mistral CLI installed?
+if ! command -v vibe &> /dev/null; then
+  echo "==> Installing Mistral CLI..."
+  curl -LsSf https://mistral.ai/vibe/install.sh | bash
+else
+  echo "Mistral CLI is already installed."
+fi
+
+
 echo "==> Symlinking dotfiles with stow..."
 stow .
