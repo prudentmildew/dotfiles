@@ -1,6 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 eval "$(starship init zsh)"
-eval "$(fnm env --use-on-cd)"
 
 alias l='ls -Gal'
 alias ga='git add .'
@@ -8,9 +7,6 @@ alias gl='git log'
 alias gs='git status'
 alias ..='cd ..'
 alias ...='cd ../..'
-
-alias claude-work='CLAUDE_CONFIG_DIR="$HOME/.claude-work" claude'
-alias claude-personal='CLAUDE_CONFIG_DIR="$HOME/.claude-personal" claude'
 
 #Commit staged changes, with message $1
 gc() {
@@ -51,6 +47,4 @@ export PATH="$HOME/.local/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/erland/.lmstudio/bin"
-# End of LM Studio CLI section
+eval "$(fnm env --use-on-cd --shell zsh)"
