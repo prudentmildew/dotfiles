@@ -1,6 +1,6 @@
 # My dotfiles
 
-macOS dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Bundles Homebrew formulae, shell/tool configuration, and setup for the CLI coding agents used day to day: Claude Code, [PI](https://www.npmjs.com/package/@mariozechner/pi-coding-agent), Hermes, and Mistral's `vibe`.
+macOS dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Bundles Homebrew formulae, shell/tool configuration, and setup for the CLI coding agents used day to day: Claude Code, Hermes, and Mistral's `vibe`.
 
 ## Setup
 
@@ -11,7 +11,7 @@ git clone <repo-url> ~/.dotfiles
 ~/.dotfiles/scripts/init.sh
 ```
 
-`init.sh` installs Homebrew, runs `brew bundle`, then installs Node.js (via `fnm`), Claude Code, PI, Bun, Hermes, and the Mistral CLI before symlinking everything with `stow .`.
+`init.sh` installs Homebrew, runs `brew bundle`, then installs Node.js (via `fnm`), Claude Code, Bun, Hermes, and the Mistral CLI before symlinking everything with `stow .`.
 
 ## Updating
 
