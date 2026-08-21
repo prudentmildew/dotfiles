@@ -32,15 +32,6 @@ else
   claude -v
 fi
 
-# Is PI installed?
-if ! command -v pi &> /dev/null; then
-  echo "==> Installing PI using npm..."
-  npm install -g @mariozechner/pi-coding-agent
-else
-  echo "PI is already installed."
-  pi -v
-fi
-
 # Is Bun installed?
 if ! command -v bun &> /dev/null; then
   echo "==> Installing Bun..."
@@ -65,7 +56,6 @@ if ! command -v vibe &> /dev/null; then
 else
   echo "Mistral CLI is already installed."
 fi
-
 
 echo "==> Symlinking dotfiles with stow..."
 stow .

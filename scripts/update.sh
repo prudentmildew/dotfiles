@@ -12,9 +12,6 @@ brew bundle
 echo "==> Updating Claude Code..."
 claude update
 
-echo "==> Updating PI..."
-npm update -g @mariozechner/pi-coding-agent
-
 echo "==> Upgrading Bun..."
 bun upgrade
 
