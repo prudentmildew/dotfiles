@@ -15,6 +15,9 @@ claude update
 echo "==> Upgrading Bun..."
 bun upgrade
 
+echo "==> Updating Hermes..."
+hermes update
+
 echo "===> Upgrading Mistral CLI..."
 curl -LsSf https://mistral.ai/vibe/install.sh | bash
 
