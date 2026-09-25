@@ -10,18 +10,28 @@ if ! command -v brew &> /dev/null; then
 else
   echo "Homebrew is already installed."
 fi
+eval "$(/opt/homebrew/bin/brew shellenv bash)"
 
-echo "==> Installing brew packages..."
-brew bundle
+# Stow before anything else, so installers that append to ~/.zshrc or
+# ~/.zprofile edit the repo's files instead of creating real ones that stow
+# would then refuse to replace. --no-folding keeps ~/.config, ~/.claude etc.
+# as real directories so tool state never lands in the repo.
+echo "==> Symlinking dotfiles with stow..."
+brew install stow fnm
+stow --no-folding .
 
-# Is Nodejs installed?
+# Node must exist before `brew bundle`, which installs the Brewfile's npm entries.
 if ! command -v node &> /dev/null; then
   echo "==> Installing Nodejs using fnm..."
   fnm install --latest
 else
   echo "Nodejs already installed."
-  node -v
 fi
+eval "$(fnm env --shell bash)"
+node -v
+
+echo "==> Installing brew packages..."
+brew bundle
 
 # Is Claude Code installed?
 if ! command -v claude &> /dev/null; then
@@ -32,15 +42,6 @@ else
   claude -v
 fi
 
-# Is Bun installed?
-if ! command -v bun &> /dev/null; then
-  echo "==> Installing Bun..."
-  curl -fsSL https://bun.sh/install | bash
-else
-  echo "Bun is already installed."
-  bun -v
-fi
-
 # Is Hermes installed?
 if ! command -v hermes &> /dev/null; then
   echo "==> Installing Hermes..."
@@ -48,14 +49,3 @@ if ! command -v hermes &> /dev/null; then
 else
   echo "Hermes is already installed."
 fi
-
-# Is Mistral CLI installed?
-if ! command -v vibe &> /dev/null; then
-  echo "==> Installing Mistral CLI..."
-  curl -LsSf https://mistral.ai/vibe/install.sh | bash
-else
-  echo "Mistral CLI is already installed."
-fi
-
-echo "==> Symlinking dotfiles with stow..."
-stow .

@@ -1,5 +1,6 @@
 tap "dapr/tap"
 tap "docker/tap"
+tap "oven-sh/bun"
 # Static checker for GitHub Actions workflow files
 brew "actionlint"
 # Microsoft Azure CLI 2.0
@@ -40,8 +41,12 @@ brew "sqlcmd"
 brew "starship"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Client for Dapr.
 brew "dapr/tap/dapr-cli", trusted: true
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager
+brew "oven-sh/bun/bun"
 # Brings the power of Copilot coding agent directly to your terminal
 cask "copilot-cli"
 # Browser for SQLite databases

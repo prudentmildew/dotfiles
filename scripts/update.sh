@@ -9,17 +9,14 @@ brew update && brew upgrade
 echo "==> Installing new brew bundle entries..."
 brew bundle
 
+echo "==> Upgrading uv tools..."
+uv tool upgrade --all
+
 echo "==> Updating Claude Code..."
 claude update
-
-echo "==> Upgrading Bun..."
-bun upgrade
 
 echo "==> Updating Hermes..."
 hermes update
 
-echo "===> Upgrading Mistral CLI..."
-curl -LsSf https://mistral.ai/vibe/install.sh | bash
-
 echo "==> Symlinking dotfiles with stow..."
-stow .
+stow --no-folding --restow .
