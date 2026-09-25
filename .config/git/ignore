@@ -13,7 +13,6 @@ Icon?
 *.swp
 *.swo
 *~
-.editorconfig
 
 # === Node.js / Frontend ===
 node_modules/
@@ -53,3 +52,5 @@ vendor/
 Thumbs.db
 
 **/.claude/settings.local.json
+
+**/.claude/.cc-writes/
