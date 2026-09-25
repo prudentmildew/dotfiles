@@ -4,10 +4,20 @@
 [init]
 	defaultBranch = main
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [core]
 	autocrlf = input
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
+
+[includeIf "gitdir:~/Work/clients/bsure/"]
+	path = ~/Work/clients/bsure/.gitconfig
+
+[includeIf "gitdir:~/Work/clients/Ambita/"]
+	path = ~/Work/clients/Ambita/.gitconfig
