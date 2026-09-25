@@ -1,4 +1,8 @@
-eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+# Interactive-shell setup. Environment and PATH live in .zprofile.
+
+autoload -Uz compinit && compinit
+
+eval "$(fnm env --use-on-cd --shell zsh)"
 eval "$(starship init zsh)"
 
 alias l='ls -Gal'
@@ -18,9 +22,9 @@ gd() {
   git branch -d "$1"
 }
 
-#Push committed changes to remote
+#Push current branch to origin
 gp() {
-  git push origin $(git rev-parse --abbrev-ref HEAD)
+  git push origin HEAD
 }
 
 #Create and checkout new branch $1
@@ -28,23 +32,7 @@ gb() {
   git checkout -b "$1"
 }
 
-#Super command: add + commit + push
+#Super command: add + commit + push (stops at the first failure)
 gacp() {
-  git add .
-  git commit -m "$1"
-  git push origin $(git rev-parse --abbrev-ref HEAD)
+  git add . && git commit -m "$1" && git push origin HEAD
 }
-
-export SHELL_SESSIONS_DISABLE=1
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-
-# bun completions
-[ -s "/Users/erland/.bun/_bun" ] && source "/Users/erland/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-eval "$(fnm env --use-on-cd --shell zsh)"
