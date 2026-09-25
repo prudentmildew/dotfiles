@@ -2,41 +2,15 @@
 \.git
 \.gitignore
 \.idea
+\.claude
 
 # macOS noise
 \.DS_Store
 
 # Dotfiles repo documentation & tooling
 README\.md
+CLAUDE\.md
 Brewfile
-progress\.txt
 \.stow-local-ignore
-\.dev
 scripts
-AGENTS.md
-CLAUDE.md
 docs
-UBIQUITOUS_LANGUAGE.md
-
-
-# Claude Code — generated runtime dirs that shouldn't live in ~
-# (stow would otherwise try to symlink .claude/ as a whole)
-\.claude/backups
-\.claude/cache
-\.claude/checkpoints
-\.claude/file-history
-\.claude/ide
-\.claude/plans
-\.claude/projects
-\.claude/session-env
-\.claude/sessions
-\.claude/shell-snapshots
-\.claude/telemetry
-\.claude/tmp
-
-# pi coding agent — generated runtime / secrets that shouldn't be symlinked into ~
-\.pi/agent/auth.json
-\.pi/agent/bin
-\.pi/agent/sessions
-
-\.bun/bin
